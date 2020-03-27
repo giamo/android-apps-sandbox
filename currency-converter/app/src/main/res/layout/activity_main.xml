@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:src="@drawable/money"
-        tools:layout_editor_absoluteX="125dp"
-        tools:layout_editor_absoluteY="48dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="2dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"

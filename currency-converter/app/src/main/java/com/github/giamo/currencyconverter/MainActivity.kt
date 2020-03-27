@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 "EUR ${amountToConvertEUR.format(2)} = USD ${convertedAmountUSD.format(2)}",
                 Toast.LENGTH_SHORT
             ).show()
+            currencyEditText.
         }
     }
 
