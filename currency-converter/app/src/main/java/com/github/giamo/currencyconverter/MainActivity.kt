@@ -29,10 +29,12 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(
                 this,
-                "EUR $amountToConvertEUR = USD $convertedAmountUSD",
+                "EUR ${amountToConvertEUR.format(2)} = USD ${convertedAmountUSD.format(2)}",
                 Toast.LENGTH_SHORT
             ).show()
         }
     }
+
+    private fun Double.format(numDigits: Int) = "%.${numDigits}f".format(this)
 }
 
