@@ -14,10 +14,25 @@ class MainActivity() : AppCompatActivity() {
         const val EMPTY = 0
         const val RED = 1
         const val YELLOW = 2
+
+        val WINNING_COMBINATIONS = arrayOf(
+            // horizontal combinations
+            arrayOf(Pair(0, 0), Pair(1, 0), Pair(2, 0)),
+            arrayOf(Pair(0, 1), Pair(1, 1), Pair(2, 1)),
+            arrayOf(Pair(0, 2), Pair(1, 2), Pair(2, 2)),
+
+            // vertical combinations
+            arrayOf(Pair(0, 0), Pair(0, 1), Pair(0, 2)),
+            arrayOf(Pair(1, 0), Pair(1, 1), Pair(1, 2)),
+            arrayOf(Pair(2, 0), Pair(2, 1), Pair(2, 2)),
+
+            // diagonal combinations
+            arrayOf(Pair(0, 0), Pair(1, 1), Pair(2, 2)),
+            arrayOf(Pair(0, 2), Pair(1, 1), Pair(2, 0))
+        )
     }
 
-    private var board: Array<Array<Int>> =
-        Array<Array<Int>>(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
+    private var board: Array<Array<Int>> = Array(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
     private var currentPlayer = RED
     private var gameEnded = false
 
@@ -68,6 +83,7 @@ class MainActivity() : AppCompatActivity() {
 
         currentPlayer = RED
         gameEnded = false
+        resultTextView.alpha = 0f
     }
 
     private fun retrievePosition(tag: Any?): Pair<Int, Int>? {
@@ -95,8 +111,22 @@ class MainActivity() : AppCompatActivity() {
         return (board[position.first][position.second] == EMPTY)
     }
 
-    private fun evaluateBoard() {
+    private fun haveSameColor(position1: Pair<Int, Int>, position2: Pair<Int, Int>): Boolean {
+        return board[position1.first][position1.second] == board[position2.first][position2.second]
+    }
 
+    private fun evaluateBoard() {
+        for (winningCombination in WINNING_COMBINATIONS) {
+            if (haveSameColor(winningCombination[0], winningCombination[1]) &&
+                haveSameColor(winningCombination[1], winningCombination[2]) &&
+                !isBoardCellEmpty(winningCombination[0])
+            ) {
+                if (currentPlayer == RED) resultTextView.text = "RED player wins!"
+                else resultTextView.text = "YELLOW player wins!"
+                resultTextView.alpha = 1f
+                gameEnded = true
+            }
+        }
     }
 
     private fun updateCurrentPlayer() {
