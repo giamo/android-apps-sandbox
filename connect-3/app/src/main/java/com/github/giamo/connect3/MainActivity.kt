@@ -1,9 +1,9 @@
 package com.github.giamo.connect3
 
 import android.graphics.Color
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -37,6 +37,8 @@ class MainActivity() : AppCompatActivity() {
     private var board: Array<Array<Int>> = Array(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
     private var currentPlayer = RED
     private var gameEnded = false
+    private val tieMediaPlayer: MediaPlayer by lazy { MediaPlayer.create(this, R.raw.tie) }
+    private val winMediaPlayer: MediaPlayer by lazy { MediaPlayer.create(this, R.raw.win) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +82,9 @@ class MainActivity() : AppCompatActivity() {
         currentPlayer = RED
         gameEnded = false
         resultTextView.visibility = View.INVISIBLE
+
+        if (tieMediaPlayer.isPlaying) tieMediaPlayer.pause()
+        if (winMediaPlayer.isPlaying) winMediaPlayer.pause()
     }
 
     private fun retrievePosition(tag: Any?): Pair<Int, Int>? {
@@ -134,6 +139,10 @@ class MainActivity() : AppCompatActivity() {
                     resultTextView.text = "YELLOW player wins!"
                     resultTextView.setTextColor(Color.YELLOW)
                 }
+
+                winMediaPlayer.seekTo(0)
+                winMediaPlayer.start()
+
                 resultTextView.visibility = View.VISIBLE
                 gameEnded = true
                 return
@@ -144,6 +153,9 @@ class MainActivity() : AppCompatActivity() {
             resultTextView.text = "It's a tie!"
             resultTextView.setTextColor(Color.GRAY)
             resultTextView.visibility = View.VISIBLE
+
+            tieMediaPlayer.seekTo(0)
+            tieMediaPlayer.start()
             gameEnded = true
         }
     }
