@@ -1,5 +1,6 @@
 package com.github.giamo.connect3
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -58,7 +59,7 @@ class MainActivity() : AppCompatActivity() {
 
             imageView.translationY = -1000f
             imageView.alpha = 1f
-            imageView.animate().translationYBy(1000f).setDuration(1000)
+            imageView.animate().translationYBy(1000f).rotation(360f).setDuration(500)
 
             evaluateBoard()
             updateCurrentPlayer()
@@ -131,8 +132,13 @@ class MainActivity() : AppCompatActivity() {
                 haveSameColor(winningCombination[1], winningCombination[2]) &&
                 !isBoardCellEmpty(winningCombination[0])
             ) {
-                if (currentPlayer == RED) resultTextView.text = "RED player wins!"
-                else resultTextView.text = "YELLOW player wins!"
+                if (currentPlayer == RED) {
+                    resultTextView.text = "RED player wins!"
+                    resultTextView.setTextColor(Color.RED)
+                } else {
+                    resultTextView.text = "YELLOW player wins!"
+                    resultTextView.setTextColor(Color.YELLOW)
+                }
                 resultTextView.alpha = 1f
                 gameEnded = true
                 return
@@ -141,6 +147,7 @@ class MainActivity() : AppCompatActivity() {
 
         if (areAllBoardCellsTaken()) {
             resultTextView.text = "It's a tie!"
+            resultTextView.setTextColor(Color.GRAY)
             resultTextView.alpha = 1f
             gameEnded = true
         }
