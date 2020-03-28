@@ -111,6 +111,16 @@ class MainActivity() : AppCompatActivity() {
         return (board[position.first][position.second] == EMPTY)
     }
 
+    private fun areAllBoardCellsTaken(): Boolean {
+        for (x in 0..2) {
+            for (y in 0..2) {
+                if (board[x][y] == EMPTY) return false
+            }
+        }
+
+        return true
+    }
+
     private fun haveSameColor(position1: Pair<Int, Int>, position2: Pair<Int, Int>): Boolean {
         return board[position1.first][position1.second] == board[position2.first][position2.second]
     }
@@ -125,7 +135,14 @@ class MainActivity() : AppCompatActivity() {
                 else resultTextView.text = "YELLOW player wins!"
                 resultTextView.alpha = 1f
                 gameEnded = true
+                return
             }
+        }
+
+        if (areAllBoardCellsTaken()) {
+            resultTextView.text = "It's a tie!"
+            resultTextView.alpha = 1f
+            gameEnded = true
         }
     }
 
