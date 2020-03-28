@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.children
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity() : AppCompatActivity() {
@@ -72,15 +73,9 @@ class MainActivity() : AppCompatActivity() {
                 board[x][y] = EMPTY
             }
         }
-        cell00.alpha = 0f
-        cell01.alpha = 0f
-        cell02.alpha = 0f
-        cell10.alpha = 0f
-        cell11.alpha = 0f
-        cell12.alpha = 0f
-        cell20.alpha = 0f
-        cell21.alpha = 0f
-        cell22.alpha = 0f
+        for (cell in gridLayout.children) {
+            cell.alpha = 0f
+        }
 
         currentPlayer = RED
         gameEnded = false
