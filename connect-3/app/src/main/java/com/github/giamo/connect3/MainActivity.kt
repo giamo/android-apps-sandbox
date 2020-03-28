@@ -16,8 +16,10 @@ class MainActivity() : AppCompatActivity() {
         const val YELLOW = 2
     }
 
-    private var board: Array<Array<Int>> = Array<Array<Int>>(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
-    private var currentPlayer = RED;
+    private var board: Array<Array<Int>> =
+        Array<Array<Int>>(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
+    private var currentPlayer = RED
+    private var gameEnded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,25 +29,24 @@ class MainActivity() : AppCompatActivity() {
     fun dropToken(view: View) {
         val imageView = view as ImageView
 
-        val position = retrievePosition(imageView.tag?.toString())
+        val position = retrievePosition(imageView.tag)
         if (position == null) {
             Toast.makeText(this, "An error has occurred", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (isBoardCellEmpty(position)) {
+        if (isBoardCellEmpty(position) && !gameEnded) {
             updateBoard(position)
+
+            if (currentPlayer == RED) imageView.setImageResource(R.drawable.red)
+            else imageView.setImageResource(R.drawable.yellow)
+
             imageView.translationY = -1000f
             imageView.alpha = 1f
-            currentPlayer = if (currentPlayer == RED) {
-                imageView.setImageResource(R.drawable.red)
-                YELLOW
-            } else {
-                imageView.setImageResource(R.drawable.yellow)
-                RED
-            }
-
             imageView.animate().translationYBy(1000f).setDuration(1000)
+
+            evaluateBoard()
+            updateCurrentPlayer()
         }
     }
 
@@ -64,20 +65,23 @@ class MainActivity() : AppCompatActivity() {
         cell20.alpha = 0f
         cell21.alpha = 0f
         cell22.alpha = 0f
+
+        currentPlayer = RED
+        gameEnded = false
     }
 
-    private fun retrievePosition(tag: String?): Pair<Int, Int>? {
+    private fun retrievePosition(tag: Any?): Pair<Int, Int>? {
         return tag.let {
             when (it) {
-                "00" -> Pair(0, 0)
-                "01" -> Pair(0, 1)
-                "02" -> Pair(0, 2)
-                "10" -> Pair(1, 0)
-                "11" -> Pair(1, 1)
-                "12" -> Pair(1, 2)
-                "20" -> Pair(2, 0)
-                "21" -> Pair(2, 1)
-                "22" -> Pair(2, 2)
+                cell00.tag -> Pair(0, 0)
+                cell01.tag -> Pair(0, 1)
+                cell02.tag -> Pair(0, 2)
+                cell10.tag -> Pair(1, 0)
+                cell11.tag -> Pair(1, 1)
+                cell12.tag -> Pair(1, 2)
+                cell20.tag -> Pair(2, 0)
+                cell21.tag -> Pair(2, 1)
+                cell22.tag -> Pair(2, 2)
                 else -> null
             }
         }
@@ -89,5 +93,15 @@ class MainActivity() : AppCompatActivity() {
 
     private fun isBoardCellEmpty(position: Pair<Int, Int>): Boolean {
         return (board[position.first][position.second] == EMPTY)
+    }
+
+    private fun evaluateBoard() {
+
+    }
+
+    private fun updateCurrentPlayer() {
+        currentPlayer =
+            if (currentPlayer == RED) YELLOW
+            else RED
     }
 }
