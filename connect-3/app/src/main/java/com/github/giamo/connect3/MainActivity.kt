@@ -84,7 +84,7 @@ class MainActivity() : AppCompatActivity() {
 
         currentPlayer = RED
         gameEnded = false
-        resultTextView.alpha = 0f
+        resultTextView.visibility = View.INVISIBLE
     }
 
     private fun retrievePosition(tag: Any?): Pair<Int, Int>? {
@@ -139,7 +139,7 @@ class MainActivity() : AppCompatActivity() {
                     resultTextView.text = "YELLOW player wins!"
                     resultTextView.setTextColor(Color.YELLOW)
                 }
-                resultTextView.alpha = 1f
+                resultTextView.visibility = View.VISIBLE
                 gameEnded = true
                 return
             }
@@ -148,7 +148,7 @@ class MainActivity() : AppCompatActivity() {
         if (areAllBoardCellsTaken()) {
             resultTextView.text = "It's a tie!"
             resultTextView.setTextColor(Color.GRAY)
-            resultTextView.alpha = 1f
+            resultTextView.visibility = View.VISIBLE
             gameEnded = true
         }
     }
