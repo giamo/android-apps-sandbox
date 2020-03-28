@@ -1,14 +1,14 @@
 package com.github.giamo.connect3
 
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity() : AppCompatActivity() {
 
     companion object {
         const val EMPTY = 0
@@ -16,8 +16,7 @@ class MainActivity : AppCompatActivity() {
         const val YELLOW = 2
     }
 
-    private val board: Array<Array<Int>> =
-        Array<Array<Int>>(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
+    private var board: Array<Array<Int>> = Array<Array<Int>>(3) { _ -> arrayOf(EMPTY, EMPTY, EMPTY) }
     private var currentPlayer = RED;
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         if (isBoardCellEmpty(position)) {
             updateBoard(position)
             imageView.translationY = -1000f
+            imageView.alpha = 1f
             currentPlayer = if (currentPlayer == RED) {
                 imageView.setImageResource(R.drawable.red)
                 YELLOW
@@ -47,6 +47,23 @@ class MainActivity : AppCompatActivity() {
 
             imageView.animate().translationYBy(1000f).setDuration(1000)
         }
+    }
+
+    fun resetGame(view: View) {
+        for (x in 0..2) {
+            for (y in 0..2) {
+                board[x][y] = EMPTY
+            }
+        }
+        cell00.alpha = 0f
+        cell01.alpha = 0f
+        cell02.alpha = 0f
+        cell10.alpha = 0f
+        cell11.alpha = 0f
+        cell12.alpha = 0f
+        cell20.alpha = 0f
+        cell21.alpha = 0f
+        cell22.alpha = 0f
     }
 
     private fun retrievePosition(tag: String?): Pair<Int, Int>? {
